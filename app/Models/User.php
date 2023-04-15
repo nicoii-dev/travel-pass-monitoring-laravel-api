@@ -9,20 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use App\Notifications\ResetPasswordNotification;
+use App\Models\CurrentAddress;
+use App\Models\PermanentAddress;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->id = Str::orderedUuid();
-        });
-    }
-
 
     /**
      * The attributes that are mass assignable.
@@ -30,10 +22,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
         'first_name',
         'middle_name',
         'last_name',
+        'gender',
+        'dob',
+        'phone_number',
+        'image',
         'role',
         'status',
         'email',
@@ -65,5 +60,15 @@ class User extends Authenticatable
         $url = 'http://localhost:3000/resetpass?token='.$token;
 
         $this->notify(new ResetPasswordNotification($url));
+    }
+
+    public function currentAddress()
+    {
+        return $this->hasOne(CurrentAddress::class, 'user_id', 'id');
+    }
+
+    public function permanentAddress()
+    {
+        return $this->hasOne(PermanentAddress::class, 'user_id', 'id');
     }
 }

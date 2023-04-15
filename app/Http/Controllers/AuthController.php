@@ -40,7 +40,7 @@ class AuthController extends Controller
                 Mail::to($user->email)->send(new VerifyEmail($user, $link));
                 DB::commit();
                 return response()->json([
-                    "message" => "Register successful"
+                    "message" => "Register successfully"
                 ], 200);
             }catch(\Exception $e)
            {

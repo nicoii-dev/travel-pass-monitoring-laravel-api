@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('medical_reservations', function (Blueprint $table) {
+        Schema::create('current_addresses', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
-            $table->string('schedule_id');
-            $table->string('reference_code');
+            $table->string('street');
+            $table->string('barangay');
+            $table->string('city_municipality');
+            $table->string('province');
+            $table->string('region');
+            $table->string('zipcode');
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('medical_reservations');
+        Schema::dropIfExists('current_addresses');
     }
 };
