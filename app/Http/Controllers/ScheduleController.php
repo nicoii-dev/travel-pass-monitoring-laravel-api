@@ -32,9 +32,10 @@ class ScheduleController extends Controller
                 $schedule->schedule_date = $request->schedule_date;
                 $schedule->schedule_time = $request->schedule_time;
                 $schedule->max_lsi = $request->max_lsi;
+                $schedule->current_lsi = 0;
                 $schedule->save();
 
-                return response()->json(['success' => 'Schedule created successfully.'], 200);
+                return response()->json(['message' => 'Schedule created successfully.'], 200);
                 }catch(\Exception $e)
            {
               DB::rollBack();
@@ -70,7 +71,7 @@ class ScheduleController extends Controller
                 $schedule->max_lsi = $request->max_lsi;
                 $schedule->save();
 
-                return response()->json(['success' => 'Schedule updated successfully.'], 200);
+                return response()->json(['message' => 'Schedule updated successfully.'], 200);
                 }catch(\Exception $e)
            {
               DB::rollBack();
@@ -82,8 +83,12 @@ class ScheduleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        if(DB::table("schedules")->where('id',$id)->delete()){
+            return response()->json(['message' => 'Schedule successfully deleted.'], 200);
+        }else{
+            return response()->json(['message' => 'Delete unsuccessful'], 500);
+        }
     }
 }

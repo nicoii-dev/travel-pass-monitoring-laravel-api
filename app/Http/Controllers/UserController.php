@@ -89,7 +89,7 @@ class UserController extends Controller
 
                 Mail::to($user->email)->send(new TeamInvitation($user, $password, $request->role));
 
-                return response()->json(['success' => 'User created successfully.'], 200);
+                return response()->json(['message' => 'User created successfully.'], 200);
                 }catch(\Exception $e)
            {
               DB::rollBack();
@@ -103,7 +103,8 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $schedule = User::where('id', $id)->with('currentAddress', 'permanentAddress')->first();
+        return response()->json($schedule, 200);
     }
 
     /**
@@ -162,7 +163,7 @@ class UserController extends Controller
                 $permanent_address->zipcode = $request->permanent_zipcode;
                 $permanent_address->save();
 
-                return response()->json(['success' => 'User updated successfully.'], 200);
+                return response()->json(['message' => 'User updated successfully.'], 200);
                 }catch(\Exception $e)
             {
                DB::rollBack();
@@ -176,7 +177,7 @@ class UserController extends Controller
         $user = User::find($id);
         $user->status = 1;
         $user->save();
-        return response()->json(['success' => 'User activated successfully'], 200);
+        return response()->json(['message' => 'User activated successfully'], 200);
     }
 
     public function deactivateUser($id)
@@ -184,7 +185,7 @@ class UserController extends Controller
         $user = User::find($id);
         $user->status = 0;
         $user->save();
-        return response()->json(['success' => 'User deactivated successfully'], 200);
+        return response()->json(['message' => 'User deactivated successfully'], 200);
     }
 
     /**

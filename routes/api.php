@@ -36,6 +36,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('create', 'ScheduleController@store');
             Route::post('view/{id}', 'ScheduleController@show');
             Route::post('update/{id}', 'ScheduleController@update');
+            Route::delete('delete/{id}', 'ScheduleController@destroy');
         });
 
         Route::group(['prefix' => 'medical-reservation'], function () {
@@ -52,6 +53,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::group(['prefix' => 'users'], function () {
             Route::get('/', 'UserController@index');
             Route::post('create', 'UserController@store');
+            Route::post('view/{id}', 'UserController@show');
             Route::post('update/{id}', 'UserController@update');
             Route::post('activate/{id}', 'UserController@activateUser');
             Route::post('deactivate/{id}', 'UserController@deactivateUser');

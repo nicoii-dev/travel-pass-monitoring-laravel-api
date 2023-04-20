@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\MedicalReservation;
+use App\Models\Schedule;
 
 class MedicalReservationController extends Controller
 {
@@ -28,14 +29,31 @@ class MedicalReservationController extends Controller
         ]);
         if($validatedData){
            try {
-                $code = Str::random(8);
-                $reservation = new MedicalReservation();
-                $reservation->user_id = $request->user_id;
-                $reservation->schedule_id = $request->schedule_id;
-                $reservation->reference_code = $code;
-                $reservation->save();
+                // filter if the max lsi is already full
+                $schedule_count = MedicalReservation::where('schedule_id', $request->schedule_id)->get()->count();
+                $schedule_info = Schedule::find($request->schedule_id);
+                if($schedule_count == (int)$schedule_info->max_lsi) {
+                    return response()->json(['message' => 'Selected slot is already full'], 200);
+                }
+                // filter if the user has already a schedule for this day
+                $schedule_info = MedicalReservation::where('schedule_id', $request->schedule_id)->first();
+                if($schedule_info != null && $schedule_info->user_id == $request->user_id) {
+                    return response()->json(['message' => 'You already have a schedule for this day'], 422);
+                } else {
+                    $code = Str::random(8);
+                    $reservation = new MedicalReservation();
+                    $reservation->user_id = $request->user_id;
+                    $reservation->schedule_id = $request->schedule_id;
+                    $reservation->reference_code = $code;
+                    $reservation->save();
+                    // updating selected schedule current_lsi count
+                    $schedule_info = Schedule::find($request->schedule_id);
+                    $schedule_info->current_lsi = $schedule_count + 1;
+                    $schedule_info->save();
+    
+                    return response()->json(['message' => 'Reservation successfully created', ], 200);
+                }
 
-                return response()->json(['success' => 'Medical reservation created successfully.'], 200);
                 }catch(\Exception $e)
            {
               DB::rollBack();
@@ -49,7 +67,7 @@ class MedicalReservationController extends Controller
      */
     public function show(string $id)
     {
-        $schedule = MedicalReservation::find($id);
+        $schedule = MedicalReservation::find($id)->with('user', 'schedule')->get();
         return response()->json($schedule, 200);
     }
 
