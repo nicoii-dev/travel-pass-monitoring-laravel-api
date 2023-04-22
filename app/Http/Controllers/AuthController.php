@@ -17,6 +17,9 @@ class AuthController extends Controller
             'first_name' => 'required|string|max:255',
             'middle_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
+            'gender' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:255',
+            'dob' => 'required|string|max:255',
             'role' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
@@ -29,6 +32,9 @@ class AuthController extends Controller
                 $user->first_name = $request->first_name;
                 $user->middle_name = $request->middle_name;
                 $user->last_name = $request->last_name;
+                $user->gender = $request->gender;
+                $user->phone_number = $request->phone_number;
+                $user->dob = $request->dob;
                 $user->role = $request->role;
                 $user->is_verified = 0;
                 $user->status = 1;

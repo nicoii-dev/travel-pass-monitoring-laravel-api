@@ -33,6 +33,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         Route::group(['prefix' => 'schedule'], function () {
             Route::get('/', 'ScheduleController@index');
+            Route::post('date', 'ScheduleController@getScheduleByDate');
             Route::post('create', 'ScheduleController@store');
             Route::post('view/{id}', 'ScheduleController@show');
             Route::post('update/{id}', 'ScheduleController@update');
@@ -41,6 +42,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         Route::group(['prefix' => 'medical-reservation'], function () {
             Route::get('/', 'MedicalReservationController@index');
+            Route::post('view/user-sched', 'MedicalReservationController@getUserSchedule');
             Route::post('create', 'MedicalReservationController@store');
             Route::post('view/{id}', 'MedicalReservationController@show');
             Route::post('update/{id}', 'MedicalReservationController@update');
@@ -57,6 +59,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('update/{id}', 'UserController@update');
             Route::post('activate/{id}', 'UserController@activateUser');
             Route::post('deactivate/{id}', 'UserController@deactivateUser');
+        });
+
+        Route::group(['prefix' => 'lsi'], function () {
+            Route::get('/', 'LsiController@index');
+            Route::post('view/{id}', 'LsiController@show');
         });
 
     });
