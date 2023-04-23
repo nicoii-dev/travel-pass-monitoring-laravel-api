@@ -24,23 +24,41 @@ class ScheduleController extends Controller
         return response()->json($schedules, 200);
     }
 
+    public function medicalSchedules(Request $request)
+    {
+
+        $schedules = Schedule::where('schedule_type', '=', 'medical')->get();
+        return response()->json($schedules, 200);
+    }
+
+    public function travelPassSchedules(Request $request)
+    {
+        $schedules = Schedule::where('schedule_type', '=', 'travelpass')->get();
+        return response()->json($schedules, 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'schedule_type' => 'required|string|max:255',
             'schedule_date' => 'required|date|max:255',
             'schedule_time' => 'required|string|max:255',
             'max_lsi' => 'required|string|max:255',
         ]);
         if($validatedData){
-            $schedule = Schedule::where('schedule_date', '=', $request->schedule_date)->where('schedule_time', '=', $request->schedule_time)->first();
+            $schedule = Schedule::where('schedule_type', $request->schedule_type)
+            ->where('schedule_date', '=', $request->schedule_date)
+            ->where('schedule_time', '=', $request->schedule_time)
+            ->first();
             if($schedule != null) {
                 return response()->json(['message' => 'This schedule is already created.'], 422);
             }
            try {
                 $schedule = new Schedule();
+                $schedule->schedule_type = $request->schedule_type;
                 $schedule->schedule_date = $request->schedule_date;
                 $schedule->schedule_time = $request->schedule_time;
                 $schedule->max_lsi = $request->max_lsi;
@@ -71,17 +89,22 @@ class ScheduleController extends Controller
     public function update(Request $request, string $id)
     {
         $validatedData = $request->validate([
+            'schedule_type' => 'required|string|max:255',
             'schedule_date' => 'required|date|max:255',
             'schedule_time' => 'required|string|max:255',
             'max_lsi' => 'required|string|max:255',
         ]);
         if($validatedData){
-            $schedule = Schedule::where('schedule_date', $request->schedule_date)->where('schedule_time', $request->schedule_time)->where('id', '!=', $id)->first();
+            $schedule = Schedule::where('schedule_type', $request->schedule_type)
+            ->where('schedule_date', $request->schedule_date)
+            ->where('schedule_time', $request->schedule_time)
+            ->where('id', '!=', $id)->first();
             if($schedule !== null) {
                 return response()->json(['message' => 'This schedule is already created.'], 422);
             }
            try {
                 $schedule = Schedule::find($id);
+                $schedule->schedule_type = $request->schedule_type;
                 $schedule->schedule_date = $request->schedule_date;
                 $schedule->schedule_time = $request->schedule_time;
                 $schedule->max_lsi = $request->max_lsi;

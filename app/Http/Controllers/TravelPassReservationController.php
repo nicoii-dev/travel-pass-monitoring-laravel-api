@@ -5,23 +5,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\MedicalReservation;
+use App\Models\TravelPassReservations;
 use App\Models\Schedule;
 
-class MedicalReservationController extends Controller
+class TravelPassReservationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $reservation = MedicalReservation::with('user', 'schedule')->get();
-        return response()->json($reservation, 200);
-    }
-
-    public function showVerified()
-    {
-        $reservation = MedicalReservation::where('status', 2)->with('user', 'schedule')->get();
+        $reservation = TravelPassReservations::with('user', 'schedule')->get();
         return response()->json($reservation, 200);
     }
 
@@ -36,18 +30,18 @@ class MedicalReservationController extends Controller
         if($validatedData){
            try {
                 // filter if the max lsi is already full
-                $schedule_count = MedicalReservation::where('schedule_id', $request->schedule_id)->get()->count();
+                $schedule_count = TravelPassReservations::where('schedule_id', $request->schedule_id)->get()->count();
                 $schedule_info = Schedule::find($request->schedule_id);
                 if($schedule_count == (int)$schedule_info->max_lsi) {
                     return response()->json(['message' => 'Selected slot is already full'], 422);
                 }
                 // filter if the user has already a schedule for this day
-                $schedule_info = MedicalReservation::where('user_id', Auth::user()->id)->where('status', '=', 1)->with('schedule')->get()->count();
+                $schedule_info = TravelPassReservations::where('user_id', Auth::user()->id)->where('status', '=', 1)->with('schedule')->get()->count();
                 if($schedule_info > 0) {
                     return response()->json(['message' => 'You already have an active schedule'], 422);
                 } else {
                     $code = Str::random(8);
-                    $reservation = new MedicalReservation();
+                    $reservation = new TravelPassReservations();
                     $reservation->user_id = Auth::user()->id;
                     $reservation->schedule_id = $request->schedule_id;
                     $reservation->reference_code = $code;
@@ -74,29 +68,7 @@ class MedicalReservationController extends Controller
      */
     public function show(string $id)
     {
-        $schedule = MedicalReservation::find($id)->with('user', 'schedule')->get();
-        return response()->json($schedule, 200);
-    }
-
-    public function getUserSchedule()
-    {
-        $schedule = MedicalReservation::where('user_id', Auth::user()->id)->with('schedule')->get();
-        return response()->json($schedule, 200);
-    }
-
-    public function setUserToAppointed(string $id)
-    {
-        try {
-            $reservation = MedicalReservation::find($id);
-            $reservation->status = 2;
-            $reservation->save();
-
-            return response()->json(['message' => 'Verified successfully.'], 200);
-            }catch(\Exception $e)
-        {
-            DB::rollBack();
-            return response()->json(throw $e);
-        }
+        //
     }
 
     /**

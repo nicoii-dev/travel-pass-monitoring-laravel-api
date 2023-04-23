@@ -34,6 +34,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::group(['prefix' => 'schedule'], function () {
             Route::get('/', 'ScheduleController@index');
             Route::post('date', 'ScheduleController@getScheduleByDate');
+            Route::post('medical', 'ScheduleController@medicalSchedules');
+            Route::post('travelpass', 'ScheduleController@travelPassSchedules');
             Route::post('create', 'ScheduleController@store');
             Route::post('view/{id}', 'ScheduleController@show');
             Route::post('update/{id}', 'ScheduleController@update');
@@ -42,10 +44,19 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         Route::group(['prefix' => 'medical-reservation'], function () {
             Route::get('/', 'MedicalReservationController@index');
+            Route::get('verified', 'MedicalReservationController@showVerified');
             Route::post('view/user-sched', 'MedicalReservationController@getUserSchedule');
             Route::post('create', 'MedicalReservationController@store');
             Route::post('view/{id}', 'MedicalReservationController@show');
             Route::post('update/{id}', 'MedicalReservationController@update');
+            Route::post('verify/{id}', 'MedicalReservationController@setUserToAppointed');
+        });
+
+        Route::group(['prefix' => 'medical-applications'], function () {
+            Route::get('/', 'MedicalApplicationsController@index');
+            Route::post('create', 'MedicalApplicationsController@store');
+            Route::post('view/{id}', 'MedicalApplicationsController@show');
+            Route::post('update', 'MedicalApplicationsController@update');
         });
 
         Route::group(['prefix' => 'dashboard'], function () {
