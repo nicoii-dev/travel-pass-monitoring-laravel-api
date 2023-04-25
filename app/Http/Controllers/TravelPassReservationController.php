@@ -66,6 +66,11 @@ class TravelPassReservationController extends Controller
                 if($schedule_count == (int)$schedule_info->max_lsi) {
                     return response()->json(['message' => 'Selected slot is already full'], 422);
                 }
+                // filter if the user have a active QR
+                $activeQr = TravelPassApplications::where('user_id', Auth::user()->id)->where('status', '=', "1")->get();
+                if(count($activeQr) > 0) {
+                    return response()->json(['message' => 'You already have an active QR Code'], 422);
+                }
                 // filter if the user has already a schedule for this day
                 $schedule_info = TravelPassReservations::where('user_id', Auth::user()->id)->where('status', '=', 1)->get()->count();
                 if($schedule_info > 0) {

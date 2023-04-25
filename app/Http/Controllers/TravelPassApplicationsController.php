@@ -53,7 +53,7 @@ class TravelPassApplicationsController extends Controller
      */
     public function show(string $id)
     {
-        $application = TravelPassApplications::find($id)->where('status', '=', '1')->with('user', 'user.currentAddress')->first();
+        $application = TravelPassApplications::where('id', $id)->where('status', '=', '1')->with('user', 'user.currentAddress')->first();
         return response()->json($application, 200);
     }
 
