@@ -57,6 +57,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('create', 'MedicalApplicationsController@store');
             Route::post('view/{id}', 'MedicalApplicationsController@show');
             Route::post('update', 'MedicalApplicationsController@update');
+
+            Route::post('user-medical-applications', 'MedicalApplicationsController@getUserMedicalApplication');
         });
 
         Route::group(['prefix' => 'travelpass-reservation'], function () {
@@ -74,7 +76,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('user', 'TravelPassApplicationsController@getUserQr');
             Route::post('create', 'TravelPassApplicationsController@store');
             Route::post('view/{id}', 'TravelPassApplicationsController@show');
-            Route::post('update/{id}', 'TravelPassApplicationsController@update');
+            Route::post('approve/{id}', 'TravelPassApplicationsController@approve');
+            Route::post('decline/{id}', 'TravelPassApplicationsController@decline');
+
+            Route::post('user-travel-applications', 'TravelPassApplicationsController@getUserTravelApplication');
         });
 
         Route::group(['prefix' => 'dashboard'], function () {
@@ -93,6 +98,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::group(['prefix' => 'lsi'], function () {
             Route::get('/', 'LsiController@index');
             Route::post('view/{id}', 'LsiController@show');
+        });
+
+        Route::group(['prefix' => 'qrcode'], function () {
+            Route::post('view', 'QrDetailsController@show');
         });
 
     });

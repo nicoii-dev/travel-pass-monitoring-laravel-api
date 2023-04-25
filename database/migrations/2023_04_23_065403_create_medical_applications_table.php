@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('appointment_id');
             $table->string('status');
             $table->string('reference_code')->nullable();
-            $table->string('comment');
+            $table->string('comment')->nullable();
             $table->timestamps();
         });
     }

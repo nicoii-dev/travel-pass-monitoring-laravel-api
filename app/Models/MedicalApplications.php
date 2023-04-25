@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\MedicalReservation;
 
 class MedicalApplications extends Model
 {
@@ -21,5 +23,11 @@ class MedicalApplications extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function appointment()
+    {
+        return $this->belongsTo(MedicalReservation::class, 'appointment_id', 'id');
+    }
+
 
 }

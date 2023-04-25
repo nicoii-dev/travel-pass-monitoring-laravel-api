@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\MedicalReservation;
+use App\Models\MedicalApplications;
 use App\Models\Schedule;
 
 class MedicalReservationController extends Controller
@@ -57,6 +58,13 @@ class MedicalReservationController extends Controller
                     $schedule_info = Schedule::find($request->schedule_id);
                     $schedule_info->current_lsi = $schedule_count + 1;
                     $schedule_info->save();
+
+                    // saving medical applications
+                    $medical = new MedicalApplications();
+                    $medical->appointment_id = $reservation->id;
+                    $medical->user_id = Auth::user()->id;
+                    $medical->status = 0;
+                    $medical->save();
     
                     return response()->json(['message' => 'Reservation successfully created', ], 200);
                 }

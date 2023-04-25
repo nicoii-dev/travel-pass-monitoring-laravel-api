@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('destination_barangay');
             $table->string('destination_street');
             $table->string('destination_zipcode');
+            $table->string('reference_code')->nullable();
             $table->string('remarks')->nullable();
             $table->timestamps();
         });

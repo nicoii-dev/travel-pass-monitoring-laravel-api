@@ -19,7 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('currentAddress', 'permanentAddress')->get();
+        $users = User::where('role', '!=', 'admin')->with('currentAddress', 'permanentAddress')->get();
         return response()->json($users, 200);
     }
 

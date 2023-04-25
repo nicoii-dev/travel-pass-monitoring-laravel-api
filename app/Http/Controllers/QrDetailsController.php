@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\QrDetails;
 
 class QrDetailsController extends Controller
 {
@@ -25,9 +26,13 @@ class QrDetailsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'user_id' => 'required|string|max:255',
+        ]);
+        $travel = QrDetails::where('user_id', $request->user_id)->where('status', '=', '1')->with('user', 'application')->first();
+        return response()->json($travel, 200);
     }
 
     /**

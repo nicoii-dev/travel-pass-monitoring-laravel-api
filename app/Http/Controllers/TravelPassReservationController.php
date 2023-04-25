@@ -56,7 +56,7 @@ class TravelPassReservationController extends Controller
         if($validatedData){
            try {
                 // filter if the user has an approve medical application
-                $medical_count = MedicalApplications::where('user_id', Auth::user()->id)->get()->count();
+                $medical_count = MedicalApplications::where('user_id', Auth::user()->id)->where('status', '=', "1")->get()->count();
                 if($medical_count < 1) {
                     return response()->json(['message' => "You don't have any approved medical applications yet"], 422);
                 }

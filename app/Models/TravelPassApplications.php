@@ -18,6 +18,6 @@ class TravelPassApplications extends Model
 
     public function reservation()
     {
-        return $this->belongsTo(TravelPassReservations::class, 'user_id', 'id');
+        return $this->belongsTo(TravelPassReservations::class, 'reservation_id', 'id');
     }
 }
