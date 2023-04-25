@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Mail\VerifyEmail;
 use App\Models\User;
+use App\Models\CurrentAddress;
 
 class AuthController extends Controller
 {
@@ -18,9 +19,17 @@ class AuthController extends Controller
             'middle_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'gender' => 'required|string|max:255',
+            'civil_status' => 'required|string|max:255',
             'phone_number' => 'required|string|max:255',
             'dob' => 'required|string|max:255',
             'role' => 'required|string|max:255',
+            'current_street' => 'required|string|max:255',
+            'current_barangay' => 'required|string|max:255',
+            'current_city' => 'required|string|max:255',
+            'current_province' => 'required|string|max:255',
+            'current_region' => 'required|string|max:255',
+            'current_zipcode' => 'required|string|max:255',
+
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required|string|min:6',
@@ -32,6 +41,7 @@ class AuthController extends Controller
                 $user->first_name = $request->first_name;
                 $user->middle_name = $request->middle_name;
                 $user->last_name = $request->last_name;
+                $user->civil_status = $request->civil_status;
                 $user->gender = $request->gender;
                 $user->phone_number = $request->phone_number;
                 $user->dob = $request->dob;
@@ -41,6 +51,17 @@ class AuthController extends Controller
                 $user->email = $request->email;
                 $user->password = bcrypt($request->password);
                 $user->save();
+
+                $current_address = new CurrentAddress();
+                $current_address->user_id = $user->id;
+                $current_address->street = $request->current_street;
+                $current_address->barangay = $request->current_barangay;
+                $current_address->city_municipality = $request->current_city;
+                $current_address->province = $request->current_province;
+                $current_address->region = $request->current_region;
+                $current_address->zipcode = $request->current_zipcode;
+                $current_address->save();
+
                 $token = $user->createToken('MyApp')->plainTextToken;
                 $link = "http://localhost:3000/verify/$user->email/token=$token";
                 Mail::to($user->email)->send(new VerifyEmail($user, $link));
@@ -157,9 +178,6 @@ class AuthController extends Controller
         $user->password = Hash::make($fields['new_password']);
         $user->save();
 
-        $response = [
-            $user,
-        ];
         return response()->json(["message" => "Password updated successfully"], 200);
     }
 }

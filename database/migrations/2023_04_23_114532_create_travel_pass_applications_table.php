@@ -14,11 +14,23 @@ return new class extends Migration
         Schema::create('travel_pass_applications', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
-            $table->string('start_date');
-            $table->string('end_date');
-            $table->string('reference_code')->nullable();
+            $table->string('reservation_id');
+            $table->string('travel_type');
+            $table->date('date_of_travel');
             $table->string('status');
-            $table->string('comment');
+            $table->string('origin_region');
+            $table->string('origin_province');
+            $table->string('origin_city');
+            $table->string('origin_barangay');
+            $table->string('origin_street');
+            $table->string('origin_zipcode');
+            $table->string('destination_region');
+            $table->string('destination_province');
+            $table->string('destination_city');
+            $table->string('destination_barangay');
+            $table->string('destination_street');
+            $table->string('destination_zipcode');
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }

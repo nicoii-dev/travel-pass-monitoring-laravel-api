@@ -26,14 +26,15 @@ class ScheduleController extends Controller
 
     public function medicalSchedules(Request $request)
     {
-
-        $schedules = Schedule::where('schedule_type', '=', 'medical')->get();
+        $request->validate(['schedule_date' => 'required|date|max:255']);
+        $schedules = Schedule::where('schedule_type', '=', 'medical')->where('schedule_date', '=', $request->schedule_date)->get();
         return response()->json($schedules, 200);
     }
 
     public function travelPassSchedules(Request $request)
     {
-        $schedules = Schedule::where('schedule_type', '=', 'travelpass')->get();
+        $request->validate(['schedule_date' => 'required|date|max:255']);
+        $schedules = Schedule::where('schedule_type', '=', 'travelpass')->where('schedule_date', '=', $request->schedule_date)->get();
         return response()->json($schedules, 200);
     }
 

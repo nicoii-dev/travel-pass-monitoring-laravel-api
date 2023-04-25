@@ -28,7 +28,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::group(['prefix' => 'auth'], function () {
             Route::post('logout', 'AuthController@logout');
             Route::post('verify-token', 'AuthController@verifyToken');
-            Route::post('change-password', ['AuthController@changePassword']);
+            Route::post('change-password', 'AuthController@changePassword');
         });
 
         Route::group(['prefix' => 'schedule'], function () {
@@ -57,6 +57,24 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('create', 'MedicalApplicationsController@store');
             Route::post('view/{id}', 'MedicalApplicationsController@show');
             Route::post('update', 'MedicalApplicationsController@update');
+        });
+
+        Route::group(['prefix' => 'travelpass-reservation'], function () {
+            Route::get('/', 'TravelPassReservationController@index');
+            Route::post('view/user-sched', 'TravelPassReservationController@getUserSchedule');
+            Route::post('create', 'TravelPassReservationController@store');
+            Route::post('view/{id}', 'TravelPassReservationController@show');
+            Route::post('update/{id}', 'TravelPassReservationController@update');
+            Route::post('verify/{id}', 'TravelPassReservationController@setUserToAppointed');
+        });
+
+        Route::group(['prefix' => 'travelpass-applications'], function () {
+            Route::get('/', 'TravelPassApplicationsController@index');
+            Route::post('application', 'TravelPassApplicationsController@getUserApplication');
+            Route::post('user', 'TravelPassApplicationsController@getUserQr');
+            Route::post('create', 'TravelPassApplicationsController@store');
+            Route::post('view/{id}', 'TravelPassApplicationsController@show');
+            Route::post('update/{id}', 'TravelPassApplicationsController@update');
         });
 
         Route::group(['prefix' => 'dashboard'], function () {

@@ -27,6 +27,7 @@ class User extends Authenticatable
         'last_name',
         'gender',
         'dob',
+        'civil_status',
         'phone_number',
         'image',
         'role',

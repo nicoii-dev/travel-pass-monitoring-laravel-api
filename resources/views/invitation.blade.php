@@ -17,7 +17,7 @@
                     <tr>
                         <td style="font-family: 'Helvetica Neue',sans-serif;background-color:#2065D1;font-size:13px;line-height:1.6;padding:20px 0" align="center">
                             <a href="#" style="color:#fff;text-decoration:none;font-size:30px" target="_blank" data-saferedirecturl="#">
-                                <strong><span>News Network</span></strong>
+                                <strong><span>Travel Pass Monitoring App</span></strong>
                             </a>
                         </td>
                     </tr>
@@ -37,7 +37,7 @@
                                                 Hi {{ $user->first_name }},
                                             </p>
                                             <p style="margin-top:15px;margin-bottom:15px;font-size:14px;color:#222222; line-height: 2;">
-                                                You are now a part of News Network team as a {{ $role }}, here's your default credentials:
+                                                You are now a part of Travel Pass Monitoring App team as a {{ $role }}, here's your default credentials:
                                                 <br />
                                                 email: {{ $user->email }}
                                                 <br />

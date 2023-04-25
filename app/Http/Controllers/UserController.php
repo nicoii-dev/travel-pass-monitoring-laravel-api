@@ -34,6 +34,7 @@ class UserController extends Controller
             'last_name' => 'required|string|max:255',
             'gender' => 'required|string|max:255',
             'dob' => 'required|string|max:255',
+            'civil_status' => 'required|string|max:255',
             'phone_number' => 'required|string|max:255',
             'role' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -43,12 +44,12 @@ class UserController extends Controller
             'current_province' => 'required|string|max:255',
             'current_region' => 'required|string|max:255',
             'current_zipcode' => 'required|string|max:255',
-            'permanent_street' => 'required|string|max:255',
-            'permanent_barangay' => 'required|string|max:255',
-            'permanent_city' => 'required|string|max:255',
-            'permanent_province' => 'required|string|max:255',
-            'permanent_region' => 'required|string|max:255',
-            'permanent_zipcode' => 'required|string|max:255',
+            // 'permanent_street' => 'required|string|max:255',
+            // 'permanent_barangay' => 'required|string|max:255',
+            // 'permanent_city' => 'required|string|max:255',
+            // 'permanent_province' => 'required|string|max:255',
+            // 'permanent_region' => 'required|string|max:255',
+            // 'permanent_zipcode' => 'required|string|max:255',
         ]);
         if($validatedData){
            try {
@@ -58,6 +59,7 @@ class UserController extends Controller
                 $user->middle_name = $request->middle_name;
                 $user->last_name = $request->last_name;
                 $user->gender = $request->gender;
+                $user->civil_status = $request->civil_status;
                 $user->dob = $request->dob;
                 $user->phone_number = $request->phone_number;
                 $user->email = $request->email;
@@ -77,15 +79,15 @@ class UserController extends Controller
                 $current_address->zipcode = $request->current_zipcode;
                 $current_address->save();
 
-                $permanent_address = new PermanentAddress();
-                $permanent_address->user_id = $user->id;
-                $permanent_address->street = $request->permanent_street;
-                $permanent_address->barangay = $request->permanent_barangay;
-                $permanent_address->city_municipality = $request->permanent_city;
-                $permanent_address->province = $request->permanent_province;
-                $permanent_address->region = $request->permanent_region;
-                $permanent_address->zipcode = $request->permanent_zipcode;
-                $permanent_address->save();
+                // $permanent_address = new PermanentAddress();
+                // $permanent_address->user_id = $user->id;
+                // $permanent_address->street = $request->permanent_street;
+                // $permanent_address->barangay = $request->permanent_barangay;
+                // $permanent_address->city_municipality = $request->permanent_city;
+                // $permanent_address->province = $request->permanent_province;
+                // $permanent_address->region = $request->permanent_region;
+                // $permanent_address->zipcode = $request->permanent_zipcode;
+                // $permanent_address->save();
 
                 Mail::to($user->email)->send(new TeamInvitation($user, $password, $request->role));
 
@@ -116,6 +118,7 @@ class UserController extends Controller
             'first_name' => 'required|string|max:255',
             'middle_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
+            'civil_status' => 'required|string|max:255',
             'gender' => 'required|string|max:255',
             'dob' => 'required|string|max:255',
             'phone_number' => 'required|string|max:255',
@@ -126,12 +129,12 @@ class UserController extends Controller
             'current_province' => 'required|string|max:255',
             'current_region' => 'required|string|max:255',
             'current_zipcode' => 'required|string|max:255',
-            'permanent_street' => 'required|string|max:255',
-            'permanent_barangay' => 'required|string|max:255',
-            'permanent_city' => 'required|string|max:255',
-            'permanent_province' => 'required|string|max:255',
-            'permanent_region' => 'required|string|max:255',
-            'permanent_zipcode' => 'required|string|max:255',
+            // 'permanent_street' => 'required|string|max:255',
+            // 'permanent_barangay' => 'required|string|max:255',
+            // 'permanent_city' => 'required|string|max:255',
+            // 'permanent_province' => 'required|string|max:255',
+            // 'permanent_region' => 'required|string|max:255',
+            // 'permanent_zipcode' => 'required|string|max:255',
         ]);
         if($validatedData){
             try {
@@ -139,6 +142,7 @@ class UserController extends Controller
                 $user->first_name = $request->first_name;
                 $user->middle_name = $request->middle_name;
                 $user->last_name = $request->last_name;
+                $user->civil_status = $request->civil_status;
                 $user->gender = $request->gender;
                 $user->dob = $request->dob;
                 $user->phone_number = $request->phone_number;
@@ -148,20 +152,20 @@ class UserController extends Controller
                 $current_address = CurrentAddress::where('user_id', $user->id)->first();
                 $current_address->street = $request->current_street;
                 $current_address->barangay = $request->current_barangay;
-                $current_address->city_municipality = $request->permanent_city;
+                $current_address->city_municipality = $request->current_city;
                 $current_address->province = $request->current_province;
                 $current_address->region = $request->current_region;
                 $current_address->zipcode = $request->current_zipcode;
                 $current_address->save();
 
-                $permanent_address = PermanentAddress::where('user_id', $user->id)->first();
-                $permanent_address->street = $request->permanent_street;
-                $permanent_address->barangay = $request->permanent_barangay;
-                $permanent_address->city_municipality = $request->permanent_city;
-                $permanent_address->province = $request->permanent_province;
-                $permanent_address->region = $request->permanent_region;
-                $permanent_address->zipcode = $request->permanent_zipcode;
-                $permanent_address->save();
+                // $permanent_address = PermanentAddress::where('user_id', $user->id)->first();
+                // $permanent_address->street = $request->permanent_street;
+                // $permanent_address->barangay = $request->permanent_barangay;
+                // $permanent_address->city_municipality = $request->permanent_city;
+                // $permanent_address->province = $request->permanent_province;
+                // $permanent_address->region = $request->permanent_region;
+                // $permanent_address->zipcode = $request->permanent_zipcode;
+                // $permanent_address->save();
 
                 return response()->json(['message' => 'User updated successfully.'], 200);
                 }catch(\Exception $e)
