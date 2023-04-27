@@ -51,7 +51,14 @@ class TravelPassApplicationsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+
+     public function show(string $id)
+     {
+         $application = TravelPassApplications::where('id', $id)->with('user', 'user.currentAddress')->first();
+         return response()->json($application, 200);
+     }
+
+    public function viewTravelpass(string $id)
     {
         $application = TravelPassApplications::where('id', $id)->where('status', '=', '1')->with('user', 'user.currentAddress')->first();
         return response()->json($application, 200);

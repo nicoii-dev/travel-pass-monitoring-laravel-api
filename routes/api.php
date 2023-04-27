@@ -56,7 +56,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/', 'MedicalApplicationsController@index');
             Route::post('create', 'MedicalApplicationsController@store');
             Route::post('view/{id}', 'MedicalApplicationsController@show');
-            Route::post('update', 'MedicalApplicationsController@update');
+            Route::post('update/{id}', 'MedicalApplicationsController@update');
 
             Route::post('user-medical-applications', 'MedicalApplicationsController@getUserMedicalApplication');
         });
@@ -75,7 +75,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('application', 'TravelPassApplicationsController@getUserApplication');
             Route::post('user', 'TravelPassApplicationsController@getUserQr');
             Route::post('create', 'TravelPassApplicationsController@store');
+            
             Route::post('view/{id}', 'TravelPassApplicationsController@show');
+            Route::post('view/travel-pass/{id}', 'TravelPassReservationController@viewTravelpass');
+
             Route::post('approve/{id}', 'TravelPassApplicationsController@approve');
             Route::post('decline/{id}', 'TravelPassApplicationsController@decline');
 

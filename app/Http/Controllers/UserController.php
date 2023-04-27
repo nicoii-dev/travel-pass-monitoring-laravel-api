@@ -147,6 +147,7 @@ class UserController extends Controller
                 $user->dob = $request->dob;
                 $user->phone_number = $request->phone_number;
                 $user->role = $request->role;
+                $user->status = $request->status;
                 $user->save();
 
                 $current_address = CurrentAddress::where('user_id', $user->id)->first();
